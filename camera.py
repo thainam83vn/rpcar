@@ -13,8 +13,8 @@ class VideoCamera(object):
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
         # instead.
-        self.size = (320, 240)
-        self.fps = 16
+        self.size = (160, 120)
+        self.fps = 8
         self.video = PiCamera()
         self.video.resolution = self.size
         self.video.framerate = self.fps
@@ -22,6 +22,7 @@ class VideoCamera(object):
         self.imgIndex = 0
         self.time = time.time()
         self.threads = []
+        self.outputpath = '/home/pi/opencv/rpcar/cameraimages'
         #video = self
         time.sleep(0.1)
         t = threading.Thread(target=self.doCamera, args=(self,))
@@ -65,10 +66,9 @@ class VideoCamera(object):
         #ret, jpeg = cv2.imencode('.jpg', self.image)
         #self.bytes = jpeg.tobytes()
         curTime = time.time()
-        if curTime-self.time>=1:
-           self.imgIndex = self.imgIndex + 1
+        if curTime-self.time>=1:           
            self.time = curTime 
-           cv2.imwrite('/home/pi/opencv/cameraimages/img' + str(self.imgIndex)+'.jpg', self.image)
+           cv2.imwrite(self.outputpath + '/' + str(curTime)+'.jpg', self.image)
         return self.bytes
         #return self.image
 
