@@ -13,7 +13,7 @@ class VideoCamera(object):
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
         # instead.
-        self.size = (160, 120)
+        self.size = (160, 128)
         self.fps = 8
         self.video = PiCamera()
         self.video.resolution = self.size
@@ -47,7 +47,7 @@ class VideoCamera(object):
             video.image = image
             video.rawCapture.truncate(0)
             video.image = cv2.cvtColor(video.image,cv2.COLOR_BGR2GRAY)
-            ret, jpeg = cv2.imencode('.jpg',video.image)
+            ret, jpeg = cv2.imencode('.jpg',video.image, [cv2.IMWRITE_JPEG_QUALITY, 90])
             self.bytes = jpeg.tobytes()
             #print('new frame')
             #print("update image")
@@ -68,7 +68,7 @@ class VideoCamera(object):
         curTime = time.time()
         if curTime-self.time>=1:           
            self.time = curTime 
-           cv2.imwrite(self.outputpath + '/' + str(curTime)+'.jpg', self.image)
+           cv2.imwrite(self.outputpath + '/' + str(int(curTime))+'.jpg', self.image)
         return self.bytes
         #return self.image
 
